@@ -6,12 +6,25 @@ public class Main {
 
 //    private static int turn = 0;
     private static String secretCode = "9305";
-    private static Scanner scanner = new Scanner(System.in);
+//    private static Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner("""
+        6
+        000000
+        111111
+        222222
+        333333
+        444444
+        555555
+        666666
+        777777
+        888888
+        999999""");
     private static StringBuilder output = new StringBuilder("Grade: ");
     public static void main(String[] args) {
+        System.out.println("Please, enter the secret code's length:");
         secretCode = genSecretCode(getLength());
-        //Game();
-        System.out.println("The random secret number is %s.".formatted(secretCode));
+        Game();
+        //System.out.println("The random secret number is %s.".formatted(secretCode));
     }
 
     private static int getLength() {
@@ -57,35 +70,30 @@ public class Main {
      */
 
     private static void Game() {
+        System.out.println("Okay, let's start a game!");
         int bull = 0;
         int cow = 0;
-        String input = String.valueOf(scanner.nextInt());
+        int turn = 0;
 
-        for (int i = 0; i < input.length(); i++) {
-            if (input.charAt(i) == secretCode.charAt(i)) {
-                bull++;
-                continue;
-            }
-            for (int j = 0; j < secretCode.length(); j++) {
-                if (input.charAt(i) == secretCode.charAt(j)) {
-                    cow++;
+        while (bull != secretCode.length()) {
+            turn++;
+            System.out.println("Turn %d:".formatted(turn));
+            String input = String.valueOf(scanner.nextInt());
+
+            for (int i = 0; i < input.length(); i++) {
+                if (input.charAt(i) == secretCode.charAt(i)) {
+                    bull++;
+                    continue;
+                }
+                for (int j = 0; j < secretCode.length(); j++) {
+                    if (input.charAt(i) == secretCode.charAt(j)) {
+                        cow++;
+                    }
                 }
             }
+            System.out.println("Grade: %d bulls and %d cows".formatted(bull,cow));
         }
-        if (bull > 0 && cow == 0) {
-            output.append("%d bull(s).".formatted(bull));
-        }
-        else if (cow > 0 && bull == 0) {
-            output.append("%d cow(s).".formatted(cow));
-        }
-        else if (bull > 0 && cow > 0) {
-            output.append("%d bull(s) and %d cow(s).".formatted(bull, cow));
-        } else {
-            output.append("None.");
-        }
-        output.append(" The secret code is %s.".formatted(secretCode));
-
-        System.out.println(output.toString());
+        System.out.println("Congratulations! You guessed the secret code.");
     }
 }
 // use two arrays to compare, input and secret code (or use .charat() dummy) or maybe char[] //investigate
