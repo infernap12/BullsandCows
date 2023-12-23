@@ -1,5 +1,6 @@
 package bullscows;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -39,7 +40,8 @@ public class Main {
     private static String genSecretCode(int desiredLength) {
         StringBuilder code = new StringBuilder();
         while (code.length() < desiredLength) {
-         String pseudoRandomNumber = String.valueOf(System.nanoTime());
+            Random random = new Random();
+            String pseudoRandomNumber = String.valueOf(random.nextInt());
             outer:
             for (int i = 0; i < pseudoRandomNumber.length() && code.length() < desiredLength; i++) {
                 char c = pseudoRandomNumber.charAt(pseudoRandomNumber.length() - 1 - i);
@@ -72,12 +74,11 @@ public class Main {
     private static void Game() {
         System.out.println("Okay, let's start a game!");
 
-
+        int turn = 0;
         int bull = 0;
         while (bull != secretCode.length()) {
             bull = 0;
             int cow = 0;
-            int turn = 0;
             turn++;
             System.out.println("Turn %d:".formatted(turn));
             String guess = String.valueOf(scanner.next());
