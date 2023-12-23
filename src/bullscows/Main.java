@@ -6,19 +6,19 @@ public class Main {
 
 //    private static int turn = 0;
     private static String secretCode = "9305";
-//    private static Scanner scanner = new Scanner(System.in);
-    private static Scanner scanner = new Scanner("""
-        6
-        000000
-        111111
-        222222
-        333333
-        444444
-        555555
-        666666
-        777777
-        888888
-        999999""");
+    private static Scanner scanner = new Scanner(System.in);
+//    private static Scanner scanner = new Scanner("""
+//        6
+//        000000
+//        111111
+//        222222
+//        333333
+//        444444
+//        555555
+//        666666
+//        777777
+//        888888
+//        999999""");
     private static StringBuilder output = new StringBuilder("Grade: ");
     public static void main(String[] args) {
         System.out.println("Please, enter the secret code's length:");
@@ -71,27 +71,33 @@ public class Main {
 
     private static void Game() {
         System.out.println("Okay, let's start a game!");
-        int bull = 0;
-        int cow = 0;
-        int turn = 0;
 
+
+        int bull = 0;
         while (bull != secretCode.length()) {
+            bull = 0;
+            int cow = 0;
+            int turn = 0;
             turn++;
             System.out.println("Turn %d:".formatted(turn));
-            String input = String.valueOf(scanner.nextInt());
+            String guess = String.valueOf(scanner.next());
 
-            for (int i = 0; i < input.length(); i++) {
-                if (input.charAt(i) == secretCode.charAt(i)) {
-                    bull++;
-                    continue;
-                }
+            for (int i = 0; i < guess.length(); i++) {  //iterate the guess
+
                 for (int j = 0; j < secretCode.length(); j++) {
-                    if (input.charAt(i) == secretCode.charAt(j)) {
-                        cow++;
+
+                    if (guess.charAt(i) == secretCode.charAt(j)) {
+                        if (j == i) {
+                            bull++;
+                        } else {
+                            cow++;
+                        }
+                        break;
                     }
+
                 }
             }
-            System.out.println("Grade: %d bulls and %d cows".formatted(bull,cow));
+            System.out.println("Grade: %d bulls and %d cows".formatted(bull, cow));
         }
         System.out.println("Congratulations! You guessed the secret code.");
     }
