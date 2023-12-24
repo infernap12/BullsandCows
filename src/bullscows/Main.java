@@ -1,44 +1,26 @@
 package bullscows;
 
-import java.util.Scanner;
+import static bullscows.InputUtils.*;
 
 public class Main {
-    private static String secretCode = "9305";
-
-    private static final Scanner scanner = ModeDetector.detectMode().equals("Check") ? new Scanner(System.in) : new Scanner("""
-        4
-        16
-        1a34
-        b354
-        93b4
-        """);
+    static String secretCode = "9305";
 
     public static void main(String[] args) {
         System.out.println("Please, enter the secret code's length:");
-        int length = getLength();
+        int length = 0;
+        int numUniqueCharacters = 0;
+        try {
+            length = getLength();
+            numUniqueCharacters = getNumUniqueChars(length);
+        } catch (NumberFormatException e) {
+            System.out.println("Error: \"abc 0 -7\" isn't a valid number.");
+            System.exit(0);
+        }
         CodeGenerator gen = new CodeGenerator(25565);
-        int numUniqueCharacters = getNumUniqueChars(length);
         secretCode = gen.genSecretCode(length,numUniqueCharacters);
         Game();
     }
 
-    private static int getLength() {
-        int input = scanner.nextInt();
-        if (input > 36) {
-            System.out.println("Error: can't generate a secret number with a length of 11 because there aren't enough unique digits.");
-            System.exit(0);
-        }
-        return input;
-    }
-
-    private static int getNumUniqueChars(int length) {
-      int input = scanner.nextInt();
-        if (input <= length) {
-            System.out.println("Error: can't generate a secret number with a unique character set less than the length.");
-            System.exit(0);
-        }
-        return input;
-    }
     private static void Game() {
         System.out.println("Okay, let's start a game!");
 
@@ -49,7 +31,7 @@ public class Main {
             int cow = 0;
             turn++;
             System.out.printf("Turn %d:%n", turn);
-            String guess = String.valueOf(scanner.nextLine());
+            String guess = getGuess();
 
             for (int i = 0; i < guess.length(); i++) {  //iterate the guess
 
