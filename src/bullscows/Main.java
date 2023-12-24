@@ -3,19 +3,12 @@ package bullscows;
 import static bullscows.InputUtils.*;
 
 public class Main {
-    static String secretCode = "9305";
+    static String secretCode;
 
     public static void main(String[] args) {
         System.out.println("Please, enter the secret code's length:");
-        int length = 0;
-        int numUniqueCharacters = 0;
-        try {
-            length = getLength();
-            numUniqueCharacters = getNumUniqueChars(length);
-        } catch (NumberFormatException e) {
-            System.out.println("Error: \"abc 0 -7\" isn't a valid number.");
-            System.exit(0);
-        }
+        int length = getLength();
+        int numUniqueCharacters = getNumUniqueChars(length);
         CodeGenerator gen = new CodeGenerator(25565);
         secretCode = gen.genSecretCode(length,numUniqueCharacters);
         Game();
@@ -26,9 +19,10 @@ public class Main {
 
         int turn = 0;
         int bull = 0;
+        int cow;
         while (bull != secretCode.length()) {
             bull = 0;
-            int cow = 0;
+            cow = 0;
             turn++;
             System.out.printf("Turn %d:%n", turn);
             String guess = getGuess();
