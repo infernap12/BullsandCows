@@ -3,8 +3,6 @@ package bullscows;
 import java.util.Scanner;
 
 public class Main {
-
-//    private static int turn = 0;
     private static String secretCode = "9305";
 
     private static final Scanner scanner = ModeDetector.detectMode().equals("Check") ? new Scanner(System.in) : new Scanner("""
@@ -22,7 +20,6 @@ public class Main {
         int numUniqueCharacters = getNumUniqueChars(length);
         secretCode = gen.genSecretCode(length,numUniqueCharacters);
         Game();
-        //System.out.println("The random secret number is %s.".formatted(secretCode));
     }
 
     private static int getLength() {
@@ -42,15 +39,6 @@ public class Main {
         }
         return input;
     }
-
-    /*
-    while code isn't long enough >
-    gen some data
-
-    iterate the data for i < the length of data && code.length < length
-        iterate the codeBuilder for the length of code
-     */
-
     private static void Game() {
         System.out.println("Okay, let's start a game!");
 
@@ -60,7 +48,7 @@ public class Main {
             bull = 0;
             int cow = 0;
             turn++;
-            System.out.println("Turn %d:".formatted(turn));
+            System.out.printf("Turn %d:%n", turn);
             String guess = String.valueOf(scanner.nextLine());
 
             for (int i = 0; i < guess.length(); i++) {  //iterate the guess
@@ -78,18 +66,9 @@ public class Main {
 
                 }
             }
-            System.out.println("Grade: %d bulls and %d cows".formatted(bull, cow));
+            System.out.printf("Grade: %d bulls and %d cows%n", bull, cow);
         }
         System.out.println("Congratulations! You guessed the secret code.");
     }
 
 }
-// use two arrays to compare, input and secret code (or use .charAt() dummy) or maybe char[] //investigate
-
-// use string builder for output
-
-/*
-The new maximum length for the code is 36. charSet max 36, codeLength max 36
-length of the secret word may not match the number of possible characters in the secret code
-request input twice: secret code length ,possible characters. //
- */
