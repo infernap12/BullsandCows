@@ -1,74 +1,54 @@
 package bullscows;
 
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
 
 //    private static int turn = 0;
     private static String secretCode = "9305";
-    private static Scanner scanner = new Scanner(System.in);
-//    private static Scanner scanner = new Scanner("""
-//        6
-//        000000
-//        111111
-//        222222
-//        333333
-//        444444
-//        555555
-//        666666
-//        777777
-//        888888
-//        999999""");
-    private static StringBuilder output = new StringBuilder("Grade: ");
+
+    private static final Scanner scanner = ModeDetector.detectMode().equals("Check") ? new Scanner(System.in) : new Scanner("""
+        4
+        16
+        1a34
+        b354
+        93b4
+        """);
+
     public static void main(String[] args) {
         System.out.println("Please, enter the secret code's length:");
-        secretCode = genSecretCode(getLength());
+        int length = getLength();
+        CodeGenerator gen = new CodeGenerator(25565);
+        int numUniqueCharacters = getNumUniqueChars(length);
+        secretCode = gen.genSecretCode(length,numUniqueCharacters);
         Game();
         //System.out.println("The random secret number is %s.".formatted(secretCode));
     }
 
     private static int getLength() {
-        int nextInt = scanner.nextInt();
-        if (nextInt > 10) {
+        int input = scanner.nextInt();
+        if (input > 36) {
             System.out.println("Error: can't generate a secret number with a length of 11 because there aren't enough unique digits.");
             System.exit(0);
         }
-        return nextInt;
+        return input;
     }
 
-    private static String genSecretCode(int desiredLength) {
-        StringBuilder code = new StringBuilder();
-        while (code.length() < desiredLength) {
-            Random random = new Random();
-            String pseudoRandomNumber = String.valueOf(random.nextInt());
-            outer:
-            for (int i = 0; i < pseudoRandomNumber.length() && code.length() < desiredLength; i++) {
-                char c = pseudoRandomNumber.charAt(pseudoRandomNumber.length() - 1 - i);
-                if (code.isEmpty()) {
-                    if (c != '0') {
-                        code.append(c);
-                    }
-                    continue;
-                }
-                for (int j = 0; j < code.length(); j++) {
-                    if ((c == code.charAt(j))) {
-                        continue outer;
-                    }
-
-                }
-                code.append(c);
-            }
+    private static int getNumUniqueChars(int length) {
+      int input = scanner.nextInt();
+        if (input <= length) {
+            System.out.println("Error: can't generate a secret number with a unique character set less than the length.");
+            System.exit(0);
         }
-        return code.toString();
+        return input;
     }
 
     /*
-    while code isnt long enough >
+    while code isn't long enough >
     gen some data
 
     iterate the data for i < the length of data && code.length < length
-        iterate the codebuilder for the length of code
+        iterate the codeBuilder for the length of code
      */
 
     private static void Game() {
@@ -81,19 +61,19 @@ public class Main {
             int cow = 0;
             turn++;
             System.out.println("Turn %d:".formatted(turn));
-            String guess = String.valueOf(scanner.next());
+            String guess = String.valueOf(scanner.nextLine());
 
             for (int i = 0; i < guess.length(); i++) {  //iterate the guess
 
-                for (int j = 0; j < secretCode.length(); j++) {
+                for (int j = 0; j < secretCode.length(); j++) { //for each iterate of guess, iterate the code
 
-                    if (guess.charAt(i) == secretCode.charAt(j)) {
-                        if (j == i) {
-                            bull++;
+                    if (guess.charAt(i) == secretCode.charAt(j)) { //if wherever we are matches,
+                        if (j == i) { // if we happen to be in alignment
+                            bull++; //that's a bull
                         } else {
-                            cow++;
+                            cow++; // if not, that's a cow
                         }
-                        break;
+                        break; //move to next character in the guess string
                     }
 
                 }
@@ -102,11 +82,14 @@ public class Main {
         }
         System.out.println("Congratulations! You guessed the secret code.");
     }
+
 }
-// use two arrays to compare, input and secret code (or use .charat() dummy) or maybe char[] //investigate
+// use two arrays to compare, input and secret code (or use .charAt() dummy) or maybe char[] //investigate
 
 // use string builder for output
 
 /*
-double fori
+The new maximum length for the code is 36. charSet max 36, codeLength max 36
+length of the secret word may not match the number of possible characters in the secret code
+request input twice: secret code length ,possible characters. //
  */
